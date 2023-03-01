@@ -21,6 +21,7 @@ interface ICartContext {
   products: IProduct[];
   cartProducts: ICartProduct[];
   setCartProducts: React.Dispatch<React.SetStateAction<ICartProduct[]>>;
+  getProducts: any;
 }
 
 interface ICartProduct {
@@ -37,6 +38,7 @@ interface IProduct {
   category?: string;
   price?: number;
   img: string;
+  product: any;
 }
 export const CartContext = createContext({} as ICartContext);
 
@@ -45,7 +47,7 @@ export const CartProvider = ({ children }: IDefaultProviderProps2) => {
   const [cartProducts, setCartProducts] = useState<ICartProduct[]>([]);
   const [products, setProducts] = useState<IProduct[]>([]);
   const navigate = useNavigate();
-  const { user1 } = useContext(UserContext);
+
 
   async function userLogout() {
     localStorage.removeItem(`@USERID:`);
@@ -53,35 +55,23 @@ export const CartProvider = ({ children }: IDefaultProviderProps2) => {
     navigate('/');
   }
 
-  function addToCart(id: number) {
-    // eslint-disable-next-line no-console
-    console.log(id, products);
-    const productToAdd: IProduct  = products.find(
-      (product) => product.id === id
-    );
-    console.log(productToAdd);
-
-    setCartProducts([...cartProducts, productToAdd]);
-    console.log(cartProducts);
+  function addToCart(prod: ICartProduct) {
+    setCartProducts([...cartProducts, prod]);
   }
 
-  useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const response = await api.get('/products', {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem(`@Token:`)}`,
-          },
-        });
-        setProducts(response.data);
-      } catch (error) {
-        // eslint-disable-next-line no-alert
-        alert(error);
-      }
-    };
-
-    getProducts();
-  }, []);
+  const getProducts = async () => {
+    try {
+      const response = await api.get('/products', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(`@Token:`)}`,
+        },
+      });
+      setProducts(response.data);
+    } catch (error) {
+      // eslint-disable-next-line no-alert
+      alert(error);
+    }
+  };
 
   return (
     <CartContext.Provider
@@ -93,6 +83,7 @@ export const CartProvider = ({ children }: IDefaultProviderProps2) => {
         addToCart,
         cartProducts,
         setCartProducts,
+        getProducts
       }}
     >
       {children}

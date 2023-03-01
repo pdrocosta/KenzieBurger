@@ -1,5 +1,6 @@
-import { createContext, useState, ReactNode, useEffect } from 'react';
+import { createContext, useState, ReactNode, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { CartContext } from './cartContext';
 import api from '../services/api';
 
 interface IDefaultProviderProps {
@@ -27,16 +28,20 @@ export const UserContext = createContext({} as IUserContext);
 
 export const UserProvider = ({ children }: IDefaultProviderProps) => {
   const [user1, setUser] = useState<IUser | null>(null);
-
+  const {getProducts} = useContext(CartContext)
   const navigate = useNavigate();
 
   const loginUser = async (formData: IUser) => {
+    // eslint-disable-next-line no-console
+    console.log(JSON.stringify(formData))
+    
     try {
-      const response = await api.post('/login', formData);
+      const response = await api.post('/login', (formData));
       localStorage.setItem('@Token:', response.data.accessToken);
       localStorage.setItem('@USERID:', response.data.user.id);
       setUser(response.data.user);
       navigate('/shop');
+      getProducts();
     } catch (error) {
       // eslint-disable-next-line no-alert
       alert(error);

@@ -10,30 +10,34 @@ interface IProduct {
   category: string;
   price: number;
   img: string;
+  product?: any;
 }
 
-const ProductCard = ({ id, name, category, price, img }: IProduct) => {
-  const {addToCart} = useContext(CartContext)
+const ProductCard = ({ id, name, category, price, img, product }: IProduct) => {
+  const { addToCart } = useContext(CartContext);
 
-  return(
+  return (
     <StyledProductCard>
-    <div className='imageBox'>
-      <img src={img} alt={name} />
-    </div>
-    <div className='content'>
-      <StyledTitle tag='h3' fontSize='three'>
-        {name}
-      </StyledTitle>
-      <StyledParagraph className='category'>{category}</StyledParagraph>
+      <div className='imageBox'>
+        <img src={img} alt={name} />
+      </div>
+      <div className='content'>
+        <StyledTitle tag='h3' fontSize='three'>
+          {name}
+        </StyledTitle>
+        <StyledParagraph className='category'>{category}</StyledParagraph>
 
-      <StyledParagraph className='price'>{price}</StyledParagraph>
-      <StyledButton onClick={()=>addToCart({id})} buttonSize='medium' buttonStyle='green'>
-        Adicionar
-      </StyledButton>
-    </div>
-  </StyledProductCard>
-  )
-}
- 
+        <StyledParagraph className='price'>{price}</StyledParagraph>
+        <StyledButton
+          onClick={() => addToCart({ product })}
+          buttonSize='medium'
+          buttonStyle='green'
+        >
+          Adicionar
+        </StyledButton>
+      </div>
+    </StyledProductCard>
+  );
+};
 
 export default ProductCard;

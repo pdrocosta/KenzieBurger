@@ -10,10 +10,10 @@ const ProductList = () => {
   const navigate = useNavigate();
 
   return (
-
-      <StyledProductList>
+    <StyledProductList>
       {products.map((product) => (
         <ProductCard
+          product={product}
           key={product.id}
           id={product.id}
           name={product.name}
@@ -23,8 +23,6 @@ const ProductList = () => {
         />
       ))}
     </StyledProductList>
-   
-   
   );
 };
 

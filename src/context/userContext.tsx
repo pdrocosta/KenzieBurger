@@ -74,7 +74,6 @@ export const UserProvider = ({ children }: IDefaultProviderProps) => {
     }
   }, []);
 
-  useEffect(() => {}, [user1]);
 
   return (
     <UserContext.Provider value={{ loginUser, user1, setUser, registerUser }}>

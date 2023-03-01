@@ -22,7 +22,7 @@ const ProductCard = ({ id, name, category, price, img, product }: IProduct) => {
         <img src={img} alt={name} />
       </div>
       <div className='content'>
-        <StyledTitle tag='h3' fontSize='three'>
+        <StyledTitle tag='h3' $fontSize='three'>
           {name}
         </StyledTitle>
         <StyledParagraph className='category'>{category}</StyledParagraph>
@@ -30,8 +30,8 @@ const ProductCard = ({ id, name, category, price, img, product }: IProduct) => {
         <StyledParagraph className='price'>{price}</StyledParagraph>
         <StyledButton
           onClick={() => addToCart({ product })}
-          buttonSize='medium'
-          buttonStyle='green'
+          $buttonSize='medium'
+          $buttonStyle='green'
         >
           Adicionar
         </StyledButton>

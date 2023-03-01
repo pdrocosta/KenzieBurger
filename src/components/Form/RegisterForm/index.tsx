@@ -19,7 +19,7 @@ const RegisterForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+
     reset,
   } = useForm<iRegisterFormData>({
     resolver: yupResolver(registerFormSchema),

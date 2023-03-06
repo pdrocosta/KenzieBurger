@@ -5,6 +5,7 @@ import ProductList from '../../components/ProductList';
 
 import { StyledContainer } from '../../styles/grid';
 
+
 const ShopPage = () => (
   <StyledShopPage>
     <CartModal />

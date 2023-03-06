@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { yupResolver } from '@hookform/resolvers/yup';
 import { loginFormSchema } from './loginFormSchema';
 import { StyledButton } from '../../../styles/button';
@@ -14,12 +13,7 @@ interface iLoginFormData {
 }
 
 export const LoginForm = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<iLoginFormData>({
+  const { register, handleSubmit, reset } = useForm<iLoginFormData>({
     resolver: yupResolver(loginFormSchema),
   });
 
@@ -27,6 +21,7 @@ export const LoginForm = () => {
 
   const loginInputs: SubmitHandler<iLoginFormData> = (loginformInput) => {
     loginUser(loginformInput);
+
     reset();
   };
   return (
@@ -37,7 +32,7 @@ export const LoginForm = () => {
         register={register('email')}
       />
       <Input
-        label='Email'
+        label='Password'
         placeholder='Type your password'
         register={register('password')}
       />

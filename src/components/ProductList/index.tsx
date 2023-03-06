@@ -1,13 +1,10 @@
-import { useContext, useEffect } from 'react'; // Removed unused import `useEffect`
-import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react'; // Removed unused import `useEffect`
 import ProductCard from './ProductCard';
 import { StyledProductList } from './style';
-import { CartContext } from '../../context/cartContext';
+import { UserContext } from '../../context/userContext';
 
 const ProductList = () => {
-  const { products } = useContext(CartContext);
-
-  const navigate = useNavigate();
+  const { products } = useContext(UserContext);
 
   return (
     <StyledProductList>
@@ -18,7 +15,7 @@ const ProductList = () => {
           id={product.id}
           name={product.name}
           category={product.category}
-          $price={product.price}
+          price={product.price}
           img={product.img}
         />
       ))}

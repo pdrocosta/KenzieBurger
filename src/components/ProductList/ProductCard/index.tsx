@@ -7,10 +7,18 @@ import { CartContext } from '../../../context/cartContext';
 interface IProduct {
   id: number;
   name: string;
-  category: string;
-  price: number;
+  category: string | undefined;
+  price: number | undefined;
   img: string;
-  product?: any;
+  product: ICartProduct;
+}
+
+interface ICartProduct {
+  id: number;
+  name: string;
+  category?: string | undefined;
+  price?: number | undefined;
+  img: string;
 }
 
 const ProductCard = ({ id, name, category, price, img, product }: IProduct) => {
@@ -29,7 +37,7 @@ const ProductCard = ({ id, name, category, price, img, product }: IProduct) => {
 
         <StyledParagraph className='price'>{price}</StyledParagraph>
         <StyledButton
-          onClick={() => addToCart({ product })}
+          onClick={() => addToCart(product)}
           $buttonSize='medium'
           $buttonStyle='green'
         >

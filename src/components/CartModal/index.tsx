@@ -6,13 +6,15 @@ import { StyledCartModalBox } from './style';
 import { StyledParagraph, StyledTitle } from '../../styles/typography';
 import { CartContext } from '../../context/cartContext';
 
-const CartModal = () => {
+const CartModal= () => {
   const { setOpenModal, openModal } = useContext(CartContext);
 
   const { cartProducts } = useContext(CartContext);
 
   return (
-    openModal && (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    <>
+      {openModal && (
       <StyledCartModalBox>
         <dialog>
           <header>
@@ -43,7 +45,8 @@ const CartModal = () => {
           </div>
         </dialog>
       </StyledCartModalBox>
-    )
+      )}
+    </>
   );
 };
 

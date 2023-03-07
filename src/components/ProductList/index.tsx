@@ -1,10 +1,10 @@
 import { useContext } from 'react'; // Removed unused import `useEffect`
 import ProductCard from './ProductCard';
 import { StyledProductList } from './style';
-import { UserContext } from '../../context/userContext';
+import { CartContext } from '../../context/cartContext';
 
 const ProductList = () => {
-  const { products } = useContext(UserContext);
+  const { products } = useContext(CartContext);
 
   return (
     <StyledProductList>

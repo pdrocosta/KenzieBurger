@@ -1,16 +1,12 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { createContext, useState, ReactNode, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import api from '../services/api';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface IDefaultProviderProps {
   children: ReactNode;
-}
-interface ICartProduct {
-  id: number;
-  name: string;
-  category?: string | undefined;
-  price?: number | undefined;
-  img: string;
 }
 
 interface IUserContext {
@@ -18,8 +14,7 @@ interface IUserContext {
   registerUser: (data: IRegisterUser) => void;
   user1: IUser | null;
   setUser: React.Dispatch<React.SetStateAction<IUser | null>>;
-  setProducts: React.Dispatch<React.SetStateAction<ICartProduct[]>>;
-  products: IProduct[];
+  userLogout: () => void;
 }
 interface IUser {
   email: string;
@@ -31,20 +26,18 @@ interface IRegisterUser {
   email: string;
   password: string;
 }
-interface IProduct {
-  id: number;
-  name: string;
-  category?: string | undefined;
-  price?: number | undefined;
-  img: string;
-}
 
 export const UserContext = createContext({} as IUserContext);
 
 export const UserProvider = ({ children }: IDefaultProviderProps) => {
   const [user1, setUser] = useState<IUser | null>(null);
   const navigate = useNavigate();
-  const [products, setProducts] = useState<IProduct[]>([]);
+
+  async function userLogout() {
+    localStorage.removeItem(`@USERID:`);
+    localStorage.removeItem(`@Token:`);
+    navigate('/');
+  }
 
   const loginUser = async (formData: IUser) => {
     try {
@@ -52,35 +45,20 @@ export const UserProvider = ({ children }: IDefaultProviderProps) => {
       setUser(response.data.user);
       localStorage.setItem('@Token:', response.data.accessToken);
       localStorage.setItem('@USERID:', response.data.user.id);
+      toast.success(`Login confirmed`);
       navigate('/shop');
-      getProducts();
     } catch (error) {
-      // eslint-disable-next-line no-alert
-      alert(error);
+      toast.error(`Login failed`);
     }
   };
   const registerUser = async (formData: IRegisterUser) => {
     try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const response = await api.post('/users', formData);
+      toast.success(`Register confirmed`);
       navigate('/');
     } catch (error) {
-      // eslint-disable-next-line no-alert
-      alert(error);
-    }
-  };
-
-  const getProducts = async () => {
-    try {
-      const response = await api.get('/products', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem(`@Token:`)}`,
-        },
-      });
-      setProducts(response.data);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log('error');
+      toast.error(`Register failed`);
     }
   };
 
@@ -88,25 +66,28 @@ export const UserProvider = ({ children }: IDefaultProviderProps) => {
     const token = localStorage.getItem('@Token:');
     if (token) {
       autoLogin();
-      getProducts();
+    } else {
+      toast.error(`Please login to access this page.`);
+      localStorage.clear();
+      navigate('/');
     }
   }, []);
 
   const autoLogin = async () => {
     const token = localStorage.getItem('@Token:');
+
     if (token) {
       navigate('/shop');
     } else {
-      // eslint-disable-next-line no-alert
-      alert('Faca login');
       localStorage.clear();
+      toast.error(`Please login to access this page.`);
       navigate('/');
     }
   };
 
   return (
     <UserContext.Provider
-      value={{ loginUser, user1, setUser, registerUser, products, setProducts }}
+      value={{ loginUser, userLogout, user1, setUser, registerUser }}
     >
       {children}
     </UserContext.Provider>

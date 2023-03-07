@@ -7,9 +7,11 @@ import LogoKenzieBurguer from '../../assets/LogoKenzieBurguer.svg';
 
 import { StyledContainer } from '../../styles/grid';
 import { CartContext } from '../../context/cartContext';
+import { UserContext } from '../../context/userContext';
 
 const Header = () => {
-  const { userLogout, setOpenModal} = useContext(CartContext);
+  const { setOpenModal } = useContext(CartContext);
+  const { userLogout } = useContext(UserContext);
 
   const handleLogout = () => {
     userLogout();

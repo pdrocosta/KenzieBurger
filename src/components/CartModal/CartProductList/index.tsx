@@ -7,7 +7,9 @@ import { StyledParagraph } from '../../../styles/typography';
 import { CartContext } from '../../../context/cartContext';
 
 const CartProductList = () => {
-  const { cartProducts } = useContext(CartContext);
+  const { cartProducts, getTotal } = useContext(CartContext);
+
+  const total = getTotal(cartProducts);
 
   return (
     <StyledCartProductList>
@@ -15,6 +17,7 @@ const CartProductList = () => {
         {cartProducts &&
           cartProducts.map((cartProduct) => (
             <CartProductCard
+              id={cartProduct.id ? cartProduct.id : 0}
               name={cartProduct.name}
               img={cartProduct.img}
               key={cartProduct.id}
@@ -26,7 +29,9 @@ const CartProductList = () => {
         <StyledParagraph>
           <strong>Total</strong>
         </StyledParagraph>
-        <StyledParagraph className='total'>R$ 14,00</StyledParagraph>
+        <StyledParagraph className='total'>
+          R$ {total.toFixed(2)}
+        </StyledParagraph>
       </div>
       <StyledButton $buttonSize='default' $buttonStyle='gray'>
         Remover todos
@@ -34,5 +39,4 @@ const CartProductList = () => {
     </StyledCartProductList>
   );
 };
-
 export default CartProductList;
